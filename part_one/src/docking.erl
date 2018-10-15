@@ -35,7 +35,6 @@ callback_mode() ->
   state_functions.
 
 init([Name, Total, Occupied]) ->
-  io:format("Initializing all things~n"),
   {ok, idle, [Name, Total, Occupied]}.
 
 idle({call, From}, release_moped, [Name, Total, 1]) ->
@@ -45,7 +44,6 @@ idle({call, From}, secure_moped, [Name, Total, Occupied]) when Total == Occupied
 idle({call, From}, release_moped, [Name, Total, Occupied]) ->
   {keep_state, [Name, Total, Occupied - 1], [{reply, From, ok}]};
 idle({call, From}, secure_moped, [Name, Total, Occupied]) ->
-  io:format("Idle recieved ~p,~p,~p~n", [From, Total, Occupied]),
   {keep_state, [Name, Total, Occupied + 1], [{reply, From, ok}]};
 idle({call, From}, get_info, [Name, Total, Occupied]) ->
   get_info(From, Name, Total, Occupied).
@@ -58,7 +56,6 @@ empty({call, From}, get_info, [Name, Total, Occupied]) ->
   get_info(From, Name, Total, Occupied).
 
 full({call, From}, release_moped, [Name, Total, Total]) ->
-  io:format("full recieved ~p,~p~n", [From, Total]),
   {next_state, idle, [Name, Total, Total - 1], [{reply, From, ok}]};
 full({call, From}, secure_moped, [Name, Total, Total]) ->
   {next_state, full, [Name, Total, Total], [{reply, From, {error, full}}] };
