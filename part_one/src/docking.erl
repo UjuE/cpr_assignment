@@ -11,9 +11,7 @@
 -behaviour(gen_statem).
 
 %% Core docking API
--export([start_link/3, release_moped/1,
-  secure_moped/1,
-  get_info/1]).
+-export([start_link/3, release_moped/1, secure_moped/1, get_info/1]).
 
 %% Exports required for gen_statem behaviour
 -export([callback_mode/0, init/1]).
