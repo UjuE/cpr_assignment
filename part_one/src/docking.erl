@@ -19,15 +19,24 @@
 %%Exports required to represent the states of this system
 -export([idle/3, empty/3, full/3]).
 
+%%% starts the docking station
+%%% Returns {ok, Pid}.
 start_link(Total, Occupied, Name) ->
   gen_statem:start({local, Name}, ?MODULE, [Name, Total, Occupied], []).
 
+%%% The user uses this function to receive a moped from the docking station
+%%% Returns ok or {error, empty}.
 release_moped(Name) ->
   gen_statem:call(Name, release_moped).
 
+%%% The user uses this function to return a moped to the docking station
+%%% Returns ok or {error, full}.
 secure_moped(Name) ->
   gen_statem:call(Name, secure_moped).
 
+%%% This is used to retrieve the state of the docking station.
+%%% It is assumed that get_info should return information irrespective of the state the system is in.
+%%% {Name, [{total, Total}, {occupied, Occupied}, {free, Total - Occupied}]}}].
 get_info(Name) ->
   gen_statem:call(Name, get_info).
 
