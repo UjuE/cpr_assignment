@@ -21,7 +21,8 @@
 
 %%% starts the docking station
 %%% Returns {ok, Pid}.
-start_link(Total, Occupied, Name) ->
+%%% Total must be greater than Zero and Occupied must be less or equal to Total.
+start_link(Total, Occupied, Name) when Total > 0, Occupied =< Total ->
   gen_statem:start_link({local, Name}, ?MODULE, [Name, Total, Occupied], []).
 
 %%% The user uses this function to receive a moped from the docking station
