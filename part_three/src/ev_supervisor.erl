@@ -20,6 +20,7 @@ start_link() ->
   ets:new(children_names, [set, named_table]),
   supervisor:start_link({local, ?MODULE},?MODULE, []).
 
+%% TODO Lock the table as the write is happening.
 start_child(Total, Occupied, Name) ->
   ChildSpec = #{id => Name,
     start => {docking, start_link, [Total, Occupied, Name]},
