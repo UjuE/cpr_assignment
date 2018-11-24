@@ -10,6 +10,17 @@
 %%%-------------------------------------------------------------------
 -module(regional_supervisor).
 -author("ujuezeoke").
+-behaviour(supervisor).
 
 %% API
--export([]).
+-export([init/1]).
+-export([start_link/0]).
+
+
+init(Args) ->
+  process_flag(trap_exit, true),
+  SupFlags = #{strategy => simple_one_for_one},
+  {ok, {SupFlags, []}}.
+
+start_link() ->
+  supervisor:start_link({global, ?MODULE, ?MODULE},?MODULE, []).
